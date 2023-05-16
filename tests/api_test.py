@@ -1,7 +1,9 @@
 import unittest
 import sys
 
-from src.serve.api import app
+from src.serve.app import app
+
+#python -m unittest tests.api_test
 
 class FlaskTest(unittest.TestCase):
     
