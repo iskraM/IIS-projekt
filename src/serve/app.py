@@ -1,24 +1,18 @@
 from flask import Flask, request
 from flask_cors import CORS
 import requests
-from bson import json_util
-from bson.objectid import ObjectId
 from pymongo import MongoClient
-
-
-app = Flask(__name__)
-
-CORS(app)
+from datetime import datetime
 
 #python -m flask --debug run
 
-#add mongo connection
+app = Flask(__name__)
+CORS(app)
+
 
 client = MongoClient('mongodb+srv://test123:test123@cluster0.zy8ouhh.mongodb.net/?retryWrites=true&w=majority')
 db = client.IISprojekt
-
 zivali = db.zivali
-
 
 API_URL = "https://api-inference.huggingface.co/models/devMinty/iis-pet-classifier"
 headers = {"Authorization": "Bearer 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"}
@@ -38,12 +32,26 @@ def predict():
     response = requests.post(API_URL, headers=headers, data=image_bytes)
     return response.json()
 
-@app.route('/zivali', methods=['POST'])
-def add_zivali():
+@app.route('/feedback', methods=['POST'])
+def add_feedback():
+    image = request.files['image'].read()
+    predicted_label = request.form['predicted_label']
+    true_label = request.form['true_label']
+    description = request.form['description']
+    time = datetime.now()
+ 
+    if not image or not predicted_label or not true_label: 
+        return "Missing data", 400
 
+    zivali.insert_one({
+        'image': image,
+        'predicted_label': predicted_label,
+        'true_label': true_label,
+        'description': description,
+        'time': time
+    })
 
-    #zivali.insert_one({'image': image_bytes,'prediction':})
-    return null
+    return "Thank you!", 201
 
 
 if __name__ == '__main__':
