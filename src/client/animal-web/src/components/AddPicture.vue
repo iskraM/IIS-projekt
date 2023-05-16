@@ -1,25 +1,32 @@
 <template>
-    <div class="container">
-      <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" />
-      <div v-if="selectedImage" class="image-container">
-        <img :src="selectedImage" alt="Selected Image" />
-      </div>
-      <div class="description-container"> Tukaj bo opis</div>
-      <div class="buttons-container">
-        <button @click="handleOK">OK</button>
-        <button @click="handleCancel">Cancel</button>
+    <div class="vl-parent" ref="main_container">
+      <div class="container">
+        <input type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" />
+        <div v-if="selectedImage" class="image-container">
+          <img :src="selectedImage" alt="Selected Image" />
+        </div>
+        <div class="description-container">{{ prediction }}</div>
+        <div class="buttons-container">
+          <button @click="handleOK">OK</button>
+          <button @click="handleCancel">Cancel</button>
+        </div>
       </div>
     </div>
   </template>
   
   <script>
+  import axios from "axios";
+
   export default {
+    
     data() {
       return {
         selectedImage: null,
         uploadedImage: null,
+        prediction: null,
       };
     },
+
     methods: {
       handleFileUpload(event) {
         const file = event.target.files[0];
@@ -32,18 +39,47 @@
           this.uploadedImage = file;
         }
       },
+
       handleOK() {
-        // Handle OK button click
-        // You can access the uploaded image file using 'this.uploadedImage'
-        // You can perform any necessary actions with the image here
+        let loader = this.$loading.show({
+          color: "#16fa97",
+          loader: "dots",
+          height: 128,
+          width: 128,
+          lockScroll: true,
+
+          container: this.fullPage ? null : this.$refs.main_container,
+          canCancel: false,
+          onCancel: this.onCancel,
+        });
+
         console.log("OK button clicked");
+
+        const formData = new FormData();
+        formData.append("image", this.uploadedImage);
+
+        axios.post("http://localhost:5000/predict", formData)
+        .then(response => {
+          console.log(response.data);
+
+          this.prediction = response.data[0]['label'];
+
+          loader.hide();
+        })
+        .catch(error => {
+          console.log(error);
+          loader.hide();
+        });
       },
+
       handleCancel() {
-        // Handle Cancel button click
-        // You can reset the selected image and perform any necessary cleanup here
         this.selectedImage = null;
         this.uploadedImage = null;
         console.log("Cancel button clicked");
+      },
+
+      onCancel() {
+        console.log("onCancel");
       },
     },
   };
