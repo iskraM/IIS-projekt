@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^1.4.0",
+    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue-loading-overlay": "^6.0.3"
@@ -19,8 +20,11 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "bootstrap": "^5.2.3",
     "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3"
+    "eslint-plugin-vue": "^8.0.3",
+    "jquery": "^3.7.0",
+    "popper.js": "^1.16.1"
   },
   "eslintConfig": {
     "root": true,

@@ -6,16 +6,17 @@ from datetime import datetime
 
 #python -m flask --debug run
 
-app = Flask(__name__)
-CORS(app)
-
-
+#region CONFIG
 client = MongoClient('mongodb+srv://test123:test123@cluster0.zy8ouhh.mongodb.net/?retryWrites=true&w=majority')
 db = client.IISprojekt
 zivali = db.zivali
 
 API_URL = "https://api-inference.huggingface.co/models/devMinty/iis-pet-classifier"
 headers = {"Authorization": "Bearer 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"}
+#endregion
+
+app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def starting():
@@ -40,13 +41,13 @@ def add_feedback():
     description = request.form['description']
     time = datetime.now()
  
-    if not image or not predicted_label or not true_label: 
+    if not image or not predicted_label or not description: 
         return "Missing data", 400
 
     zivali.insert_one({
         'image': image,
         'predicted_label': predicted_label,
-        'true_label': true_label,
+        'true_label': true_label if true_label else predicted_label,
         'description': description,
         'time': time
     })
