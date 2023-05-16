@@ -23,6 +23,8 @@ pytorch-lightning = "^2.0.2"
 torchvision = "^0.15.2"
 transformers = "^4.29.1"
 dvc = "^2.56.0"
+bson = "^0.5.10"
+pymongo = "^4.3.3"
 
 
 [tool.poetry.group.dev.dependencies]
