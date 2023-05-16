@@ -10,6 +10,16 @@
           <button @click="handleOK">OK</button>
           <button @click="handleCancel">Cancel</button>
         </div>
+        <form v-if="prediction !== null" @submit="submitForm">
+          <label for="predictionCorrect">Is the prediction correct?</label>
+          <select id="predictionCorrect" v-model="predictionCorrect">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <label for="trueLabel">True Label:</label>
+          <input type="text" id="trueLabel" v-model="trueLabel" required>
+          <button type="submit">Submit</button>
+        </form>
       </div>
     </div>
   </template>
@@ -24,6 +34,8 @@
         selectedImage: null,
         uploadedImage: null,
         prediction: null,
+        predictionCorrect: null,
+        trueLabel: '',
       };
     },
 
@@ -63,6 +75,7 @@
           console.log(response.data);
 
           this.prediction = response.data[0]['label'];
+          this.predictionCorrect = null;
 
           loader.hide();
         })
@@ -70,6 +83,30 @@
           console.log(error);
           loader.hide();
         });
+
+
+      },
+
+      submitForm() {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append("image", this.uploadedImage);
+        formData.append("predicted_label", this.prediction);
+        formData.append("true_label", this.trueLabel); // Replace "true_label_value" with the actual true label value
+        formData.append("description", "description_value"); // Replace "description_value" with the actual description value
+        formData.append("time", new Date().toISOString());
+
+        axios
+          .post("http://localhost:5000/feedback", formData)
+          .then((response) => {
+            console.log("Feedback submitted:", response.data);
+            // Handle any further actions after submitting the feedback
+          })
+          .catch((error) => {
+            console.log("Error submitting feedback:", error);
+            // Handle the error scenario, if needed
+          });
+
       },
 
       handleCancel() {
