@@ -25,6 +25,8 @@ transformers = "^4.29.1"
 dvc = "^2.56.0"
 bson = "^0.5.10"
 pymongo = "^4.3.3"
+openai = "^0.27.6"
+bs4 = "^0.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
