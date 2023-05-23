@@ -6,32 +6,18 @@
             artificial intelligence to learn more about your furry companions. Our innovative platform allows you to upload
             a photo of your beloved pet and receive a tailored response that identifies the animal and provides insightful
             information about their breed, characteristics, and care.
-            <br /><br />
-            Pets bring joy, companionship, and love to our lives, and we understand the importance of understanding and
-            connecting with them on a deeper level. Whether you have a playful pup, a cuddly kitten, a feathery friend, or a
-            scaly sidekick, our API is designed to recognize and celebrate the uniqueness of each individual pet.
-            <br /><br />
-            Through advanced computer vision algorithms, our API analyzes the distinct features of your pet, such as their
-            coat pattern, body structure, and facial characteristics. It then matches these attributes against a
-            comprehensive database of popular home pet breeds, enabling us to accurately identify your pet and provide you
-            with specific information about their breed's temperament, exercise needs, grooming requirements, and more.
-            <br /><br />
-            We know that pets are cherished members of the family, and our goal is to enhance the bond between you and your
-            furry friend by deepening your understanding of their needs and preferences. Our website is a one-stop
-            destination for pet owners seeking knowledge and connection, allowing you to explore the fascinating world of
-            home pets from the convenience of your device.
         </p>
 
         <div class="container">
             <div v-if="selectedImage" class="image-container">
-                <img :src="selectedImage" alt="Selected Image" />
+                <img style="max-height:300px" :src="selectedImage" alt="Selected Image" />
             </div>
             <input class="form-control form-control-sm" v-if="prediction === null" type="file" ref="fileInput" @change="handleFileUpload" accept="image/*" />
             <button v-if="prediction !== null" class="btn btn-success" @click="handleCancel">Reset</button>
 
             <div v-if="prediction !== null" class="mt-2 mb-4">
-                <p>Image of {{ prediction }}</p>
-                <p>Here are some characteristics of {{ prediction }}.</p>
+                <p>Image of {{ prediction }} ({{ score }}%)<br/>Here are some characteristics of {{ prediction }}.</p>
+                <p><i>{{ fun_fact }}</i></p>
 
                 <div v-if="!didGiveFeedBack" class="card p-4">
                     <form @submit="submitForm">
@@ -58,6 +44,7 @@
                                     <option value="Parrot">Parrot</option>
                                     <option value="Gold fish">Gold fish</option>
                                     <option value="Koi fish">Koi fish</option>
+                                    <option value="other">Other</option>
                                 </select>
                             </div>
 
@@ -80,6 +67,8 @@ export default {
             selectedImage: null,
             uploadedImage: null,
             prediction: null,
+            score: null,
+            fun_fact: null,
             predictionCorrect: "yes",
             trueLabel: '',
             didGiveFeedBack: false
@@ -123,10 +112,12 @@ export default {
                 .then(response => {
                     console.log(response.data);
 
-                    this.prediction = response.data[0]['label'];
+                    this.prediction = response.data['label'];
+                    this.score = parseFloat(response.data['score']).toFixed(2) * 100;
                     this.predictionCorrect = "yes";
                     this.trueLabel = '';
                     this.didGiveFeedBack = false;
+                    this.fun_fact = response.data['fun_fact'];
 
                     loader.hide();
                 })

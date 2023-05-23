@@ -5,6 +5,8 @@ from pymongo import MongoClient
 from datetime import datetime
 import openai
 from bs4 import BeautifulSoup
+import time
+import json
 
 #python -m flask --debug run
 
@@ -16,7 +18,9 @@ zivali = db.zivali
 API_URL = "https://api-inference.huggingface.co/models/devMinty/iis-pet-classifier"
 headers = {"Authorization": "Bearer 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"}
 
-openai.api_key = "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"
+# MI openai key - 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
+#openai.organization = "feri-iis-project-mi-al-2023"
+openai.api_key = "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"
 
 #endregion
 
@@ -26,13 +30,13 @@ CORS(app)
 
 def generate_anwser(question):
     responce = openai.Completion.create(
-        engine = "text-ada-001",
+        engine = "text-davinci-003",
         prompt = question,
-        max_tokens = 1024,
+        max_tokens = 64,
         temperature = 0.7,
         n=1,
         stop = None,
-        timeout = 10,
+        timeout = 1000,
     )
     anwser = responce.choices[0].text.strip()
     return anwser
@@ -52,7 +56,20 @@ def predict():
     image_bytes = image.read()
 
     response = requests.post(API_URL, headers=headers, data=image_bytes)
-    return response.json()
+
+    # zbudim server
+    if "error" in str(response.content):
+        time.sleep(20)
+
+        response = requests.post(API_URL, headers=headers, data=image_bytes)
+
+    ff = aitest(response.json()[0]['label'])
+
+    prediction =  response.json()[0]
+    answer = json.loads(ff.response[0].decode())["anwser"]
+    prediction["fun_fact"] = answer
+
+    return prediction, 200
 
 @app.route('/feedback', methods=['POST'])
 def add_feedback():
@@ -75,8 +92,6 @@ def add_feedback():
 
     return "Thank you!", 201
 
-
-
 @app.route('/aitest/<question>', methods=['POST'])
 def aitest(question):
     q = "Tell me a fun fact about " + question
@@ -84,6 +99,7 @@ def aitest(question):
     return jsonify({'anwser': anwser})
 
 
+# region
 # @app.route('/wikitest/<animal>', methods=['POST'])
 # def wikitest(animal):
 #     url = "https://en.wikipedia.org/wiki/" + animal
@@ -133,7 +149,7 @@ def aitest(question):
 #                 paragraph_text = "No information found"
         
 #         return jsonify({'paragraph': paragraph_text})
-
+# endregion
 
 
 if __name__ == '__main__':
