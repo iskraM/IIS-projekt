@@ -345,21 +345,6 @@ files = [
 beautifulsoup4 = "*"
 
 [[package]]
-name = "bson"
-version = "0.5.10"
-description = "BSON codec for Python"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "bson-0.5.10.tar.gz", hash = "sha256:d6511b2ab051139a9123c184de1a04227262173ad593429d21e443d6462d6590"},
-]
-
-[package.dependencies]
-python-dateutil = ">=2.4.0"
-six = ">=1.9.0"
-
-[[package]]
 name = "celery"
 version = "5.2.7"
 description = "Distributed Task Queue."
@@ -3134,6 +3119,21 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "1.0.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
+    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "pytorch-lightning"
 version = "2.0.2"
 description = "PyTorch Lightning is the lightweight PyTorch wrapper for ML researchers. Scale your models. Write less boilerplate."
@@ -4402,4 +4402,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a3aa04bf27a35057f2c77457777bfc4eb8bea6da6dfcad10afd003b86d67d716"
+content-hash = "cd1abc004607244edf572767e3321a8d43475ca11cbb71682fa27b69344f3453"

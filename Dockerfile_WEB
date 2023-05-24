@@ -1,0 +1,18 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY src/client/animal-web/ .
+
+RUN npm install
+
+RUN npm run build
+
+EXPOSE 8080
+
+CMD [ "npm", "run", "serve" ]
+
+
+# docker build -t devminty/iis-project-frontend:1.0 -f Dockerfile_WEB .
+# docker run -it -d -p 8080:8080 --name IIS-PROJECT-WEB devminty/iis-project-frontend:1.0
+# docker push devminty/iis-project-frontend:1.0

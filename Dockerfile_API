@@ -1,0 +1,19 @@
+FROM python:3.10.7
+
+WORKDIR /app
+
+RUN pip install poetry
+ENV PATH="$PATH:/root/.poetry/bin"
+
+COPY ./pyproject.toml .
+RUN poetry install --no-dev --no-root
+
+COPY ./src/serve/app.py .
+
+EXPOSE 5000
+
+CMD [ "poetry", "run", "python", "app.py" ]
+
+# docker build -t devminty/iis-project-backend:1.0 -f Dockerfile_API .
+# docker run -it -d -p 5000:5000 --name IIS-PROJECT-API devminty/iis-project-backend:1.0
+# docker push devminty/iis-project-backend:1.0

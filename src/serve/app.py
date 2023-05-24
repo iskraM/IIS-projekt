@@ -1,26 +1,29 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import requests
-from pymongo import MongoClient
-from datetime import datetime
-import openai
-from bs4 import BeautifulSoup
+import os
 import time
 import json
+import openai
+import requests
+from flask_cors import CORS
+from datetime import datetime
+from bs4 import BeautifulSoup
+from pymongo import MongoClient
+from flask import Flask, request, jsonify
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 #python -m flask --debug run
 
 #region CONFIG
-client = MongoClient('mongodb+srv://test123:test123@cluster0.zy8ouhh.mongodb.net/?retryWrites=true&w=majority')
+client = MongoClient(os.getenv("MONGODB_URL"))
 db = client.IISprojekt
 zivali = db.zivali
 
 API_URL = "https://api-inference.huggingface.co/models/devMinty/iis-pet-classifier"
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": f"Bearer {os.getenv('HUGGING_FACE_TOKEN')}"}
 
-# MI openai key - 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
-#openai.organization = "feri-iis-project-mi-al-2023"
-openai.api_key = "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"
+openai.api_key = os.getenv("OPEN_AI_TOKEN")
 
 #endregion
 
@@ -63,7 +66,7 @@ def predict():
 
         response = requests.post(API_URL, headers=headers, data=image_bytes)
 
-    ff = aitest(response.json()[0]['label'])
+    ff = openai_fun_fact(response.json()[0]['label'])
 
     prediction =  response.json()[0]
     answer = json.loads(ff.response[0].decode())["anwser"]
@@ -93,13 +96,13 @@ def add_feedback():
     return "Thank you!", 201
 
 @app.route('/aitest/<question>', methods=['POST'])
-def aitest(question):
+def openai_fun_fact(question):
     q = "Tell me a fun fact about " + question
     anwser = generate_anwser(q)
     return jsonify({'anwser': anwser})
 
 
-# region
+# region WIKI   
 # @app.route('/wikitest/<animal>', methods=['POST'])
 # def wikitest(animal):
 #     url = "https://en.wikipedia.org/wiki/" + animal
