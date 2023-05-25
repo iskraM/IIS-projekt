@@ -7,9 +7,8 @@ from pymongo import MongoClient
 load_dotenv()
 
 url = os.getenv("MONGODB_URL")
-print(f"URL: {url}")
 
-client = MongoClient("mongodb+srv://test123:test123@cluster0.zy8ouhh.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient(url)
 db = client.IISprojekt
 collection_zivali = db.zivali
 

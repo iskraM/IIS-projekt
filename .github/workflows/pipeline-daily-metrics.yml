@@ -28,3 +28,5 @@ jobs:
       - name: Run calculate metrics script
         run: |
           poetry run python src/data/calculate_metrics.py
+        env:
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}
