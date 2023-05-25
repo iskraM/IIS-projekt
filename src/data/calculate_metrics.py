@@ -1,14 +1,16 @@
 import os
 import json
+import mlflow
 
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
 load_dotenv()
 
-url = os.getenv("MONGODB_URL")
+mongo_url = os.getenv("MONGODB_URL")
+mlflow_url = os.getenv("MLFLOW_TRACKING_URI")
 
-client = MongoClient(url)
+client = MongoClient(mongo_url)
 db = client.IISprojekt
 collection_zivali = db.zivali
 
@@ -26,3 +28,9 @@ for entry in all_entries:
 print(f"{correct} out of {count} are correct: {correct/count*100}%")
 
 
+mlflow.set_tracking_uri(mlflow_url)    
+mlflow.set_experiment("DAILY_METRICS_EXPERIMENT")
+
+mlflow.log_metric("Accuracy", correct/count)
+mlflow.log_param("All predictions", count)
+mlflow.log_param("Correct predictions", correct)
