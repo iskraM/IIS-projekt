@@ -11,7 +11,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = MongoClient(os.getenv("MONGODB_URL"))
+mongo = os.getenv("MONGODB_URL")
+print(mongo)
+client = MongoClient(mongo)
+
+
 db = client.IISprojekt
 zivali = db.zivali
 

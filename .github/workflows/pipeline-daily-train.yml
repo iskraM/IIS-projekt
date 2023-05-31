@@ -29,5 +29,5 @@ jobs:
         run: |
           poetry run python src/models/train.py
         env:
-          MONOGDB_URL: ${{ secrets.MONGODB_URL }}
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}
 
