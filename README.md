@@ -1,4 +1,3 @@
-# Petster 2000
 <div align="center">
     <img alt="Poetry" src="https://img.shields.io/badge/Poetry-fff?style=for-the-badge&logo=poetry">
     <img alt="Poetry" src="https://img.shields.io/badge/scikit learn-fff?style=for-the-badge&logo=scikitlearn">
@@ -10,6 +9,7 @@
     <img alt="Postman" src="https://img.shields.io/badge/Postman-fff?style=for-the-badge&logo=postman"/>
 </div>
 
+# Petster 2000
 Pet Classifier with Fun Facts.
 
 ## Description
