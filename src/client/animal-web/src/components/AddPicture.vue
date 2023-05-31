@@ -16,7 +16,7 @@
             <button v-if="prediction !== null" class="btn btn-success" @click="handleCancel">Reset</button>
 
             <div v-if="prediction !== null" class="mt-2 mb-4">
-                <p>Image of {{ prediction }} ({{ score }}%)<br/>Here are some characteristics of {{ prediction }}.</p>
+                <p>Image of {{ prediction }}<br/>Here are some characteristics of {{ prediction }}.</p>
                 <p><i>{{ fun_fact }}</i></p>
 
                 <div v-if="!didGiveFeedBack" class="card p-4">
@@ -67,7 +67,6 @@ export default {
             selectedImage: null,
             uploadedImage: null,
             prediction: null,
-            score: null,
             fun_fact: null,
             predictionCorrect: "yes",
             trueLabel: '',
@@ -103,17 +102,13 @@ export default {
                 onCancel: this.onCancel,
             });
 
-            console.log("OK button clicked");
-
             const formData = new FormData();
             formData.append("image", this.uploadedImage);
 
-            axios.post("http://localhost:5000/predict", formData)
+            //axios.post("http://localhost:5000/predict_online_model", formData)
+            axios.post("http://localhost:5000/predict_local_model", formData)
                 .then(response => {
-                    console.log(response.data);
-
                     this.prediction = response.data['label'];
-                    this.score = parseFloat(response.data['score']).toFixed(2) * 100;
                     this.predictionCorrect = "yes";
                     this.trueLabel = '';
                     this.didGiveFeedBack = false;
@@ -160,7 +155,7 @@ export default {
         },
 
         onCancel() {
-            console.log("onCancel");
+            // nothing to do here
         },
     },
 };
