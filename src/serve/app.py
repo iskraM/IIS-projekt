@@ -30,7 +30,6 @@ API_URL = "https://api-inference.huggingface.co/models/devMinty/iis-pet-classifi
 headers = {"Authorization": f"Bearer {os.getenv('HUGGING_FACE_TOKEN')}"}
 
 openai.api_key = os.getenv("OPEN_AI_TOKEN")
-
 #endregion
 
 app = Flask(__name__)
@@ -60,8 +59,8 @@ def generate_anwser(question):
 def starting():
     return "Hello world of inteligent systems"
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/predict_online_model', methods=['POST'])
+def predict_online():
     if 'image' not in request.files:
         return "No image found", 400
     
@@ -105,15 +104,14 @@ def add_feedback():
 
     return "Thank you!", 201
 
-@app.route('/aitest/<question>', methods=['POST'])
+@app.route('/openAI/<question>', methods=['POST'])
 def openai_fun_fact(question):
     q = "Tell me a fun fact about " + question
     anwser = generate_anwser(q)
     return jsonify({'anwser': anwser})
 
-
-@app.route('/test_local_model', methods=['POST'])
-def test_local_model():    
+@app.route('/predict_local_model', methods=['POST'])
+def predict_local_model():    
     if 'image' not in request.files:
         return "No image found", 400
     
@@ -134,59 +132,6 @@ def test_local_model():
     prediction["fun_fact"] = answer
 
     return prediction, 200
-
-
-# region WIKI   
-# @app.route('/wikitest/<animal>', methods=['POST'])
-# def wikitest(animal):
-#     url = "https://en.wikipedia.org/wiki/" + animal
-#     if requests.get(url).status_code != 200:
-#         return jsonify({'paragraph': "No information found for used search parameter"})
-#     else:
-#         response = requests.get("https://en.wikipedia.org/wiki/" + animal)
-#         soup = BeautifulSoup(response.content, 'html.parser')
-#         paragraphs = soup.find_all('p')
-
-#         for paragraph in paragraphs:
-#             if animal in paragraph.get_text():
-#                 paragraph_text = paragraph.get_text()
-#                 paragraph_text = paragraph_text.replace('\n', '')
-#                 paragraph_text = paragraph_text.replace('[1]', '')
-#                 paragraph_text = paragraph_text.replace('[2]', '')
-#                 paragraph_text = paragraph_text.replace('[3]', '')
-#                 paragraph_text = paragraph_text.replace('[4]', '')
-#                 paragraph_text = paragraph_text.replace('[5]', '')
-#                 paragraph_text = paragraph_text.replace('[6]', '')
-#                 break
-#             elif "_" in animal:
-#                 wordeOne = animal.split("_")[0]
-#                 if wordeOne in paragraph.get_text():
-#                     paragraph_text = paragraph.get_text()
-#                     paragraph_text = paragraph_text.replace('\n', '')
-#                     paragraph_text = paragraph_text.replace('[1]', '')
-#                     paragraph_text = paragraph_text.replace('[2]', '')
-#                     paragraph_text = paragraph_text.replace('[3]', '')
-#                     paragraph_text = paragraph_text.replace('[4]', '')
-#                     paragraph_text = paragraph_text.replace('[5]', '')
-#                     paragraph_text = paragraph_text.replace('[6]', '')
-#                     break
-#             elif " " in animal:
-#                 wordeOne = animal.split(" ")[0]
-#                 if wordeOne in paragraph.get_text():
-#                     paragraph_text = paragraph.get_text()
-#                     paragraph_text = paragraph_text.replace('\n', '')
-#                     paragraph_text = paragraph_text.replace('[1]', '')
-#                     paragraph_text = paragraph_text.replace('[2]', '')
-#                     paragraph_text = paragraph_text.replace('[3]', '')
-#                     paragraph_text = paragraph_text.replace('[4]', '')
-#                     paragraph_text = paragraph_text.replace('[5]', '')
-#                     paragraph_text = paragraph_text.replace('[6]', '')
-#                     break
-#             else:
-#                 paragraph_text = "No information found"
-        
-#         return jsonify({'paragraph': paragraph_text})
-# endregion
 
 
 if __name__ == '__main__':
