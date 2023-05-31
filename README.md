@@ -24,7 +24,7 @@ The website is the user-facing component of the project, providing a user-friend
 ## Workflows
 The project incorporates two daily workflows to ensure the smooth operation and continuous improvement of the system:
 
-1. Daily Metrics Workflow: This workflow collects and analyzes daily metrics related to the production model. It helps monitor the performance of the ML classifier, providing valuable insights into its accuracy, response time, and other relevant metrics. These metrics assist in identifying areas of improvement and optimizing the overall user experience.
+1. Daily Metrics Workflow: This workflow collects and analyzes daily metrics related to the production model. It helps monitor the performance of the ML classifier, providing valuable insights into its accuracy. These metric assist in identifying areas of improvement and optimizing the overall user experience.
 
 2. Continuous Training Workflow: This workflow focuses on the continuous training of the ML model. It leverages new data to retrain the model periodically, ensuring it remains up-to-date and capable of accurate predictions. By incorporating newly available information, the model can adapt to changing trends and improve its prediction capabilities over time.
 
