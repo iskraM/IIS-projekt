@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   rest-api:
-    image: devminty/iis-project-backend:1.0
+    image: devminty/iis-project-backend:1.1
     container_name: IIS-Project-Backend
     ports:
       - 5000:5000
@@ -9,7 +9,7 @@ services:
       - ./.env.prod
 
   web-app:
-    image: devminty/iis-project-frontend:1.0
+    image: devminty/iis-project-frontend:1.1
     container_name: IIS-Project-Frontend
     ports:
       - 8080:8080
