@@ -3,6 +3,7 @@ import time
 import json
 import openai
 import requests
+
 from flask_cors import CORS
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -10,6 +11,11 @@ from pymongo import MongoClient
 from flask import Flask, request, jsonify
 
 from dotenv import load_dotenv
+
+import torch
+from transformers import AutoImageProcessor, ViTForImageClassification
+from PIL import Image
+from io import BytesIO
 
 load_dotenv()
 
@@ -29,6 +35,10 @@ openai.api_key = os.getenv("OPEN_AI_TOKEN")
 
 app = Flask(__name__)
 CORS(app)
+
+# model
+image_processor = AutoImageProcessor.from_pretrained("devMinty/iis-pet-classifier")
+model = ViTForImageClassification.from_pretrained("devMinty/iis-pet-classifier")
 
 
 def generate_anwser(question):
@@ -100,6 +110,30 @@ def openai_fun_fact(question):
     q = "Tell me a fun fact about " + question
     anwser = generate_anwser(q)
     return jsonify({'anwser': anwser})
+
+
+@app.route('/test_local_model', methods=['POST'])
+def test_local_model():    
+    if 'image' not in request.files:
+        return "No image found", 400
+    
+    image = request.files['image']
+    image_bytes = Image.open(image)
+
+    inputs = image_processor(image_bytes, return_tensors="pt")
+    with torch.no_grad():
+        logits = model(**inputs).logits
+
+    predicted_label = logits.argmax(-1).item()
+    predicted_class = model.config.id2label[predicted_label]
+
+    ff = openai_fun_fact(predicted_class)
+
+    prediction = {"label": predicted_class}
+    answer = json.loads(ff.response[0].decode())["anwser"]
+    prediction["fun_fact"] = answer
+
+    return prediction, 200
 
 
 # region WIKI   
