@@ -141,8 +141,8 @@ def predict_local_model():
 @app.route('/get_prod_accuracy', methods=['GET'])
 def get_prod_accuracy():
     experiment_id = mlflow.get_experiment_by_name("DAILY_METRICS_EXPERIMENT").experiment_id
-    latest_run = mlflow.search_runs(experiment_ids=[experiment_id], order_by=["start_time"], max_results=1)
-    accuracy = latest_run["Accuracy"].values[0]
+    latest_run = mlflow.search_runs(experiment_ids=[experiment_id], order_by=["start_time DESC"], max_results=1)
+    accuracy = latest_run['metrics.Accuracy'][0]
 
     return jsonify({'accuracy': accuracy})
 

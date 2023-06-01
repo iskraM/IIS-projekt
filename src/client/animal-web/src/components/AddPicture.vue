@@ -221,6 +221,7 @@ img {
     margin-top: 45px;
     top: 50%;
     left: 50%;
+    background-color: white;
     border-radius: 10px;
     z-index: 1000;
     padding: 20px;
