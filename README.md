@@ -1,11 +1,11 @@
 <div align="center">
     <img alt="Poetry" src="https://img.shields.io/badge/Poetry-fff?style=for-the-badge&logo=poetry">
-    <img alt="Poetry" src="https://img.shields.io/badge/scikit learn-fff?style=for-the-badge&logo=scikitlearn">
-    <img alt="Poetry" src="https://img.shields.io/badge/mlflow-fff?style=for-the-badge&logo=mlflow">
-    <img alt="Poetry" src="https://img.shields.io/badge/dvc-fff?style=for-the-badge&logo=dvc">
+    <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-fff?style=for-the-badge&logo=PyTorch">
+    <img alt="MLFlow" src="https://img.shields.io/badge/mlflow-fff?style=for-the-badge&logo=mlflow">
+    <img alt="DVC" src="https://img.shields.io/badge/dvc-fff?style=for-the-badge&logo=dvc">
     <img alt="Python" src="https://img.shields.io/badge/Python-fff?style=for-the-badge&logo=python">
-    <img alt="Python" src="https://img.shields.io/badge/Vue.js-fff?style=for-the-badge&logo=vue.js">
-    <img alt="Postman" src="https://img.shields.io/badge/Docker-fff?style=for-the-badge&logo=docker"/>
+    <img alt="VueJs" src="https://img.shields.io/badge/Vue.js-fff?style=for-the-badge&logo=vue.js">
+    <img alt="Docker" src="https://img.shields.io/badge/Docker-fff?style=for-the-badge&logo=docker"/>
     <img alt="Postman" src="https://img.shields.io/badge/Postman-fff?style=for-the-badge&logo=postman"/>
 </div>
 
