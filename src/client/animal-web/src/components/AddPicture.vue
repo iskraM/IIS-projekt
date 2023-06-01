@@ -8,6 +8,14 @@
             information about their breed, characteristics, and care.
         </p>
 
+        <div class="position-relative position-absolute top-0 end-0 mt-3 me-3">
+            <img src="https://cdn-icons-png.flaticon.com/512/813/813776.png" class="info-pic float-end" @mouseover="showPopup = true" @mouseleave="showPopup = false">
+            <div class="popup" v-show="showPopup">
+                Prodution accuracy: {{ accuracy }}%
+            </div>
+        </div>
+
+
         <div class="container">
             <div v-if="selectedImage" class="image-container">
                 <img style="max-height:300px" :src="selectedImage" alt="Selected Image" />
@@ -70,11 +78,17 @@ export default {
             fun_fact: null,
             predictionCorrect: "yes",
             trueLabel: '',
-            didGiveFeedBack: false
+            didGiveFeedBack: false,
+            showPopup: false,
+            accuracy: null
         };
     },
 
     methods: {
+        togglePopup() {
+            this.showPopup = !this.showPopup;
+        },
+
         handleFileUpload(event) {
             const file = event.target.files[0];
             if (file) {
@@ -158,6 +172,17 @@ export default {
             // nothing to do here
         },
     },
+
+    beforeMount() {
+        // call api get_accuracy
+        axios.get("http://localhost:5000/get_prod_accuracy")
+            .then(response => {
+                this.accuracy = (response.data['accuracy'] * 100).toFixed(2);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    },
 };
 </script>
 
@@ -186,4 +211,20 @@ img {
     max-width: 100%;
     height: auto;
 }
+
+.info-pic{
+    width: 40px;
+    height: 40px;
+}
+
+.popup{
+    margin-top: 45px;
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    z-index: 1000;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 </style>

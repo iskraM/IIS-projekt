@@ -4,6 +4,8 @@ import json
 import openai
 import requests
 
+import mlflow
+
 from flask_cors import CORS
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -23,6 +25,8 @@ load_dotenv()
 
 #region CONFIG
 client = MongoClient(os.getenv("MONGODB_URL"))
+mlflow_url = os.getenv("MLFLOW_TRACKING_URI")
+
 db = client.IISprojekt
 zivali = db.zivali
 
@@ -30,6 +34,7 @@ API_URL = "https://api-inference.huggingface.co/models/devMinty/iis-pet-classifi
 headers = {"Authorization": f"Bearer {os.getenv('HUGGING_FACE_TOKEN')}"}
 
 openai.api_key = os.getenv("OPEN_AI_TOKEN")
+mlflow.set_tracking_uri(mlflow_url)
 #endregion
 
 app = Flask(__name__)
@@ -132,6 +137,14 @@ def predict_local_model():
     prediction["fun_fact"] = answer
 
     return prediction, 200
+
+@app.route('/get_prod_accuracy', methods=['GET'])
+def get_prod_accuracy():
+    experiment_id = mlflow.get_experiment_by_name("DAILY_METRICS_EXPERIMENT").experiment_id
+    latest_run = mlflow.search_runs(experiment_ids=[experiment_id], order_by=["start_time"], max_results=1)
+    accuracy = latest_run["Accuracy"].values[0]
+
+    return jsonify({'accuracy': accuracy})
 
 
 if __name__ == '__main__':
