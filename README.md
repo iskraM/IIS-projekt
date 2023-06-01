@@ -63,3 +63,18 @@ This project was developed as a collaborative effort for our Master's assignment
         </tr>
     </tbody>
 </table>
+
+### Mentor
+<table>
+    <tbody>
+        <tr>
+            <td align="center">
+                <a href="[https://github.com/iskraM](https://github.com/GregaVrbancic)">
+                    <img src="https://avatars.githubusercontent.com/u/1894788?v=4" width="100px;" alt="Grega Vrbančič Github avatar"/>
+                    <br/>
+                    <sub><b>Grega Vrbančič</b></sub>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
