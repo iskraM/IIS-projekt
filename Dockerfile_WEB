@@ -10,9 +10,11 @@ RUN npm run build
 
 EXPOSE 8080
 
+ENV ENV_TYPE="DOCKER"
+
 CMD [ "npm", "run", "serve" ]
 
 
-# docker build -t devminty/iis-project-frontend:1.1 -f Dockerfile_WEB .
-# docker run -it -d -p 8080:8080 --name IIS-PROJECT-WEB devminty/iis-project-frontend:1.1
-# docker push devminty/iis-project-frontend:1.1
+# docker build -t devminty/iis-project-frontend:1.2 -f Dockerfile_WEB .
+# docker run -it -d -p 8080:8080 --name IIS-PROJECT-WEB devminty/iis-project-frontend:1.2
+# docker push devminty/iis-project-frontend:1.2

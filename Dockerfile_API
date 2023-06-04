@@ -12,6 +12,8 @@ COPY ./src/serve/app.py .
 
 EXPOSE 5000
 
+ENV ENV_TYPE="DOCKER"
+
 CMD [ "poetry", "run", "python", "app.py" ]
 
 # docker build -t devminty/iis-project-backend:1.1 -f Dockerfile_API .

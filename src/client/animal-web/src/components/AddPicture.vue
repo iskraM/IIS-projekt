@@ -119,8 +119,12 @@ export default {
             const formData = new FormData();
             formData.append("image", this.uploadedImage);
 
-            //axios.post("http://localhost:5000/predict_online_model", formData)
-            axios.post("http://localhost:5000/predict_local_model", formData)
+            let url = "http://localhost:5000/predict_online_model"; 
+            if (process.env.ENV_TYPE == "CUDA_SUPPORTED") {
+                url = "http://localhost:5000/predict_local_model";
+            }
+
+            axios.post(url, formData)
                 .then(response => {
                     this.prediction = response.data['label'];
                     this.predictionCorrect = "yes";

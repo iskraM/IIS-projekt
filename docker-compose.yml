@@ -9,7 +9,7 @@ services:
       - ./.env.prod
 
   web-app:
-    image: devminty/iis-project-frontend:1.1
+    image: devminty/iis-project-frontend:1.2
     container_name: IIS-Project-Frontend
     ports:
       - 8080:8080
